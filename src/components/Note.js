@@ -1,22 +1,29 @@
-import React from 'react';
-export default (props) => {
-  const findNote = () => {
-    const note = props.notes.find(
-      (note) => note.id === props.match.params.noteId
-    );
-    console.log(note);
+import React, { useContext } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import ApiContext from './ApiContext';
+
+const Note = ({ note, match }) => {
+  const { deleteNote } = useContext(ApiContext);
+  const filterNotes = () => {
+    console.log(deleteNote, 'here');
+    if (match.params.folderId) {
+      console.log(match.params);
+      return (
+        note.folderId === match.params.folderId && (
+          <>
+            <Link to={`/notes/${note.id}`}> {note.name} </Link>
+            <button onClick={() => deleteNote(note.id)}>delete</button>
+          </>
+        )
+      );
+    }
     return (
-      <div>
-        <h1>{note.name}</h1>
-        <p>{note.content}</p>
-      </div>
+      <>
+        <Link to={`/notes/${note.id}`}> {note.name} </Link>
+        <button onClick={() => deleteNote(note.id)}>delete</button>
+      </>
     );
   };
-
-  return (
-    <div>
-      {findNote()}
-      <button onClick={() => props.history.goBack()}>go back</button>
-    </div>
-  );
+  return <div className='note'>{filterNotes()}</div>;
 };
+export default withRouter(Note);
