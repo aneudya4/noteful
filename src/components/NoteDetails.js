@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import NoteMainTitle from './NoteMainTitle';
+// import AddNote from './AddNote';
 import ApiContext from './ApiContext';
 
 const NoteDetails = (props) => {
@@ -13,6 +15,7 @@ const NoteDetails = (props) => {
           <h1>{note.name}</h1>
           <p>{note.modified}</p>
           <p>{note.content}</p>
+          <Link to='../add-note'>Add Note</Link>
         </div>
       </>
     );

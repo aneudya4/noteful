@@ -1,13 +1,10 @@
 import React, { useContext } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import ApiContext from './ApiContext';
-
 const Note = ({ note, match }) => {
   const { deleteNote } = useContext(ApiContext);
   const filterNotes = () => {
-    console.log(deleteNote, 'here');
     if (match.params.folderId) {
-      console.log(match.params);
       return (
         note.folderId === match.params.folderId && (
           <>

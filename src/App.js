@@ -1,12 +1,13 @@
 import React from 'react';
-import { Route, Switch, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import './App.css';
 import Folders from './components/FoldersList';
 import Sidebar from './components/Sidebar';
 import ApiContext from './components/ApiContext';
 import NoteList from './components/NoteList';
 import NoteDetails from './components/NoteDetails';
-
+import AddFolder from './components/AddFolder';
+import AddNote from './components/AddNote';
 class App extends React.Component {
   state = {
     folders: [],
@@ -27,6 +28,16 @@ class App extends React.Component {
     this.setState({
       notes: this.state.notes.filter((note) => note.id !== noteId),
     });
+  };
+
+  addNewNote = (note) => {
+    const newNoteState = [...this.state.notes, note];
+    this.setState({ notes: newNoteState });
+  };
+
+  addNewFolder = (folder) => {
+    const newFolderState = [...this.state.folders, folder];
+    this.setState({ folders: newFolderState });
   };
 
   render() {
@@ -54,6 +65,27 @@ class App extends React.Component {
               ))}
 
               <Route exact path='/notes/:noteId' component={NoteDetails} />
+              <Route
+                exact
+                path='/add-folder'
+                render={(routerProps) => (
+                  <AddFolder
+                    {...routerProps}
+                    addNewFolder={this.addNewFolder}
+                  />
+                )}
+              />
+              <Route
+                exact
+                path='/add-note'
+                render={(routerProps) => (
+                  <AddNote
+                    {...routerProps}
+                    folders={folders}
+                    addNewNote={this.addNewNote}
+                  />
+                )}
+              />
             </Sidebar>
           </ApiContext.Provider>
         </main>
