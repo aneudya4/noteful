@@ -1,17 +1,21 @@
 import React from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 import './App.css';
-import Folders from './components/FoldersList';
-import Sidebar from './components/Sidebar';
+import FoldersList from './components/folder-list/FoldersList';
+import NavigationBar from './components/navigation-bar/NavigationBar';
 import ApiContext from './components/ApiContext';
-import NoteList from './components/NoteList';
-import NoteDetails from './components/NoteDetails';
-import AddFolder from './components/AddFolder';
-import AddNote from './components/AddNote';
+import NoteDetails from './components/note-details/NoteDetails';
+import AddFolder from './components/add-folder/AddFolder';
+import AddNote from './components/add-note/AddNote';
+import ErrorBoundary from './components/error-boundary/ErrorBoundary';
+import NoteList from './components/note-list/NoteList';
+import AppHeader from './components/app-header/AppHeader';
+
 class App extends React.Component {
   state = {
     folders: [],
     notes: [],
+    hasError: false,
   };
 
   async componentDidMount() {
@@ -25,8 +29,31 @@ class App extends React.Component {
       .then((res) => this.setState({ [data]: res }));
   };
   handleDeleteNote = (noteId) => {
+    const updatedNotes = this.state.notes.filter((note) => note.id !== noteId);
+
+    const options = {
+      method: 'DELETE',
+    };
+    fetch(`http://localhost:9090/notes/${noteId}`, options)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error('Something went wrong');
+        }
+        return res;
+      })
+      .then((res) => res.json())
+      .then(() => {
+        this.setState({
+          notes: updatedNotes,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          hasError: true,
+        });
+      });
     this.setState({
-      notes: this.state.notes.filter((note) => note.id !== noteId),
+      notes: updatedNotes,
     });
   };
 
@@ -40,6 +67,56 @@ class App extends React.Component {
     this.setState({ folders: newFolderState });
   };
 
+  renderMainRoutes() {
+    return (
+      <>
+        {['/', '/folder/:folderId'].map((path, index) => (
+          <Route
+            exact
+            path={path}
+            key={index}
+            render={(routerProps) => <FoldersList {...routerProps} />}
+          />
+        ))}
+      </>
+    );
+  }
+
+  renderNotesRoutes() {
+    return (
+      <div className='notes-container'>
+        {['/', '/folder/:folderId'].map((path, index) => (
+          <Route
+            exact
+            path={path}
+            key={index}
+            render={(routerProps) => <NoteList {...routerProps} />}
+          />
+        ))}
+
+        <Route exact path='/notes/:noteId' component={NoteDetails} />
+        <Route
+          exact
+          path='/add-folder'
+          render={(routerProps) => (
+            <AddFolder {...routerProps} addNewFolder={this.addNewFolder} />
+          )}
+        />
+        <Route
+          exact
+          path='/add-note'
+          render={(routerProps) => (
+            <AddNote
+              {...routerProps}
+              folders={this.state.folders}
+              addNewNote={this.addNewNote}
+            />
+          )}
+        />
+      </div>
+    );
+  }
+
   render() {
     const { folders, notes } = this.state;
     const value = {
@@ -49,44 +126,14 @@ class App extends React.Component {
     };
     return (
       <>
-        <h1>
-          <Link to='/'>Noteful</Link>
-        </h1>
-        <hr />
+        <AppHeader />
         <main>
           <ApiContext.Provider value={value}>
-            <Sidebar className='aside'>
-              {['/', '/folder/:folderId'].map((path, index) => (
-                <Route exact path={path} key={index} component={Folders} />
-              ))}
+            <NavigationBar className='aside'>
+              <ErrorBoundary>{this.renderMainRoutes()}</ErrorBoundary>
+            </NavigationBar>
 
-              {['/', '/folder/:folderId?'].map((path, index) => (
-                <Route exact path={path} key={index} component={NoteList} />
-              ))}
-
-              <Route exact path='/notes/:noteId' component={NoteDetails} />
-              <Route
-                exact
-                path='/add-folder'
-                render={(routerProps) => (
-                  <AddFolder
-                    {...routerProps}
-                    addNewFolder={this.addNewFolder}
-                  />
-                )}
-              />
-              <Route
-                exact
-                path='/add-note'
-                render={(routerProps) => (
-                  <AddNote
-                    {...routerProps}
-                    folders={folders}
-                    addNewNote={this.addNewNote}
-                  />
-                )}
-              />
-            </Sidebar>
+            <ErrorBoundary>{this.renderNotesRoutes()}</ErrorBoundary>
           </ApiContext.Provider>
         </main>
       </>

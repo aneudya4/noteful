@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import NoteMainTitle from './NoteMainTitle';
-// import AddNote from './AddNote';
-import ApiContext from './ApiContext';
+import NoteMainTitle from '../note-main-title/NoteMainTitle';
+import ApiContext from '../ApiContext';
 
+import './noteDetails.css';
 const NoteDetails = (props) => {
   const { notes } = useContext(ApiContext);
   const renderNote = () => {
@@ -11,8 +11,7 @@ const NoteDetails = (props) => {
     return (
       <>
         <NoteMainTitle {...props} note={note} />
-        <div>
-          <h1>{note.name}</h1>
+        <div className='note-details'>
           <p>{note.modified}</p>
           <p>{note.content}</p>
           <Link to='../add-note'>Add Note</Link>

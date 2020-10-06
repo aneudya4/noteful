@@ -1,0 +1,13 @@
+header {
+  margin: 10px;
+  height: 100px;
+}
+
+header h1 {
+  text-align: center;
+  font-size: 70px;
+}
+
+header h1 a {
+  color: rgb(45, 119, 189);
+}

@@ -1,15 +1,21 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  list-style: none;
+  text-decoration: none;
+}
+body {
+  background-color: #102541;
+}
+
 main {
   display: flex;
-}
-.aside {
-  display: flex;
-}
-
-.folders {
-  margin: 0 50px;
+  width: 800px;
+  margin: 10px auto;
 }
 
-.main-title h1 {
-  writing-mode: vertical-lr;
-  text-orientation: upright;
+.input-error {
+  color: rgb(240, 77, 48);
+  text-transform: uppercase;
 }

@@ -1,0 +1,19 @@
+.note-details {
+  color: white;
+}
+.note-details p {
+  margin: 10px 0;
+  font-size: 20px;
+}
+
+.note-details a {
+  background-color: #0f3d79;
+  color: white;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.note-details a:hover {
+  background-color: #0d3364;
+}

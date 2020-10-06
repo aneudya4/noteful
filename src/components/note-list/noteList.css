@@ -1,0 +1,34 @@
+.notes-container {
+  height: 100vh;
+}
+
+.note {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  margin: 0 auto;
+}
+
+.note a {
+  color: white;
+  font-size: 20px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+.note a:hover {
+  color: rgb(228, 67, 38);
+}
+
+.note button {
+  border: 0;
+  margin-bottom: 5px;
+  background-color: #0f3d79;
+  color: white;
+  padding: 10px;
+  text-transform: capitalize;
+}
+.note button:hover {
+  background-color: rgb(228, 67, 38);
+  cursor: pointer;
+}

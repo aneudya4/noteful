@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default (props) => {
-  return <div>{props.error}</div>;
+  return <div className='input-error'>{props.error}</div>;
 };

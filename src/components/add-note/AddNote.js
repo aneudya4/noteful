@@ -1,19 +1,25 @@
 import React from 'react';
-import ValidationError from './ValidationError';
-import { withRouter, Link } from 'react-router-dom';
+import './addNote.css';
+import PropTypes from 'prop-types';
+
+import ValidationError from '../validation-error/ValidationError';
+import { Link } from 'react-router-dom';
 class AddNote extends React.Component {
   state = {
     name: '',
     content: '',
     folder: 'Important',
-    isNoteNameValid: true,
+    invalidInput: false,
+    hasError: false,
   };
 
   validateName = () => {
     if (!this.state.name) {
-      this.setState({ isNoteNameValid: false });
+      this.setState({ isNoteNameValid: true });
       return false;
     }
+    this.setState({ isNoteNameValid: false });
+
     return true;
   };
 
@@ -30,6 +36,7 @@ class AddNote extends React.Component {
 
     return folder.id;
   };
+
   onNoteSubmit(event) {
     event.preventDefault();
     const { name, content, folder } = this.state;
@@ -50,16 +57,17 @@ class AddNote extends React.Component {
       fetch('http://localhost:9090/notes', options)
         .then((response) => {
           if (!response.ok) {
-            throw new Error();
+            throw new Error('could not be added');
           }
           return response.json();
         })
         .then((data) => {
-          console.log(data);
           this.props.addNewNote(data);
           this.props.history.push('/');
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          this.setState({ hasError: true });
+        });
     }
   }
   renderFoldersOptions = () => {
@@ -71,14 +79,19 @@ class AddNote extends React.Component {
     ));
   };
   render() {
+    if (this.state.hasError) {
+      return (
+        <div>
+          <p>An Error has Occured , try again later</p>
+          <Link to='/'>Go Back</Link>
+        </div>
+      );
+    }
     return (
-      <div className='AddNote form'>
-        <Link to='/'>
-          <button>back</button>
-        </Link>
-        <form className='AddNote' onSubmit={(e) => this.onNoteSubmit(e)}>
+      <div className='add-note-container'>
+        <form className='add-note' onSubmit={(e) => this.onNoteSubmit(e)}>
           <label htmlFor='noteName' name='name'>
-            name your note:
+            Title for your note:
           </label>
           <input
             type='text'
@@ -87,7 +100,7 @@ class AddNote extends React.Component {
             name='name'
             value={this.state.name}
           />
-          {!this.state.isNoteNameValid && (
+          {this.state.isNoteNameValid && (
             <ValidationError error='input cant be blank' />
           )}
           <br />
@@ -109,10 +122,17 @@ class AddNote extends React.Component {
           >
             {this.renderFoldersOptions()}
           </select>
-          <button type='submit'>Add</button>
+          <button type='submit'>Add new note</button>
         </form>
+        <button className='btn' onClick={() => this.props.history.goBack()}>
+          Go back
+        </button>
       </div>
     );
   }
 }
-export default withRouter(AddNote);
+export default AddNote;
+
+AddNote.propTypes = {
+  addNewNote: PropTypes.func,
+};
