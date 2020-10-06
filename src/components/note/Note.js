@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
 import ApiContext from '../ApiContext';
-import ErrorBoundary from '../error-boundary/ErrorBoundary';
 const Note = ({ note, match }) => {
   const { deleteNote } = useContext(ApiContext);
   const filterNotes = () => {
@@ -23,11 +22,7 @@ const Note = ({ note, match }) => {
       </>
     );
   };
-  return (
-    <div className='note'>
-      <ErrorBoundary>{filterNotes()}</ErrorBoundary>
-    </div>
-  );
+  return <div className='note'>{filterNotes()}</div>;
 };
 export default withRouter(Note);
 

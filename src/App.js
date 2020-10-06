@@ -93,26 +93,27 @@ class App extends React.Component {
             render={(routerProps) => <NoteList {...routerProps} />}
           />
         ))}
-
-        <Route exact path='/notes/:noteId' component={NoteDetails} />
-        <Route
-          exact
-          path='/add-folder'
-          render={(routerProps) => (
-            <AddFolder {...routerProps} addNewFolder={this.addNewFolder} />
-          )}
-        />
-        <Route
-          exact
-          path='/add-note'
-          render={(routerProps) => (
-            <AddNote
-              {...routerProps}
-              folders={this.state.folders}
-              addNewNote={this.addNewNote}
-            />
-          )}
-        />
+        <ErrorBoundary>
+          <Route exact path='/notes/:noteId' component={NoteDetails} />
+          <Route
+            exact
+            path='/add-folder'
+            render={(routerProps) => (
+              <AddFolder {...routerProps} addNewFolder={this.addNewFolder} />
+            )}
+          />
+          <Route
+            exact
+            path='/add-note'
+            render={(routerProps) => (
+              <AddNote
+                {...routerProps}
+                folders={this.state.folders}
+                addNewNote={this.addNewNote}
+              />
+            )}
+          />
+        </ErrorBoundary>
       </div>
     );
   }
@@ -133,7 +134,7 @@ class App extends React.Component {
               <ErrorBoundary>{this.renderMainRoutes()}</ErrorBoundary>
             </NavigationBar>
 
-            <ErrorBoundary>{this.renderNotesRoutes()}</ErrorBoundary>
+            {this.renderNotesRoutes()}
           </ApiContext.Provider>
         </main>
       </>

@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
 export default class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -8,7 +6,6 @@ export default class ErrorBoundary extends React.Component {
   }
 
   static getDerivedStateFromError(error) {
-    console.log('here error');
     return { hasError: true };
   }
 
@@ -16,7 +13,7 @@ export default class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <button>
-          <Link to='/'>return to main page</Link>
+          <a href='/'>return to main page</a>
         </button>
       );
     }
