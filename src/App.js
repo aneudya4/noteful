@@ -1,15 +1,15 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import './App.css';
 import FoldersList from './components/folder-list/FoldersList';
 import NavigationBar from './components/navigation-bar/NavigationBar';
-import ApiContext from './components/ApiContext';
 import NoteDetails from './components/note-details/NoteDetails';
 import AddFolder from './components/add-folder/AddFolder';
 import AddNote from './components/add-note/AddNote';
 import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 import NoteList from './components/note-list/NoteList';
 import AppHeader from './components/app-header/AppHeader';
+import ApiContext from './ApiContext';
+import './App.css';
 
 class App extends React.Component {
   state = {

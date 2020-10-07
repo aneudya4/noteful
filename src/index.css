@@ -8,14 +8,3 @@
 body {
   background-color: #102541;
 }
-
-main {
-  display: flex;
-  width: 800px;
-  margin: 10px auto;
-}
-
-.input-error {
-  color: rgb(240, 77, 48);
-  text-transform: uppercase;
-}

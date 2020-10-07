@@ -32,3 +32,15 @@
   background-color: rgb(228, 67, 38);
   cursor: pointer;
 }
+
+.notes > a {
+  background-color: #0f3d79;
+  color: white;
+  display: inline-block;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.notes a:hover {
+  background-color: #0d3364;
+}

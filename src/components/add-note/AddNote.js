@@ -9,18 +9,25 @@ class AddNote extends React.Component {
     name: '',
     content: '',
     folder: 'Important',
-    invalidInput: false,
+    invalidInputName: false,
+    invalidInputContent: false,
     hasError: false,
   };
 
-  validateName = () => {
-    if (!this.state.name) {
-      this.setState({ isNoteNameValid: true });
+  validateInput = (name, content) => {
+    if (name && content) {
+      this.setState({ invalidInputName: false, invalidInputContent: false });
+      return true;
+    } else if (!name && !content) {
+      this.setState({ invalidInputName: true, invalidInputContent: true });
+      return false;
+    } else if (!name && content) {
+      this.setState({ invalidInputName: true, invalidInputContent: false });
+      return false;
+    } else if (name && !content) {
+      this.setState({ invalidInputName: false, invalidInputContent: true });
       return false;
     }
-    this.setState({ isNoteNameValid: false });
-
-    return true;
   };
 
   onInputChange = ({ target }) => {
@@ -40,7 +47,7 @@ class AddNote extends React.Component {
   onNoteSubmit(event) {
     event.preventDefault();
     const { name, content, folder } = this.state;
-    if (!this.validateName()) {
+    if (!this.validateInput(name, content, event.target, event)) {
       return;
     } else {
       const newNote = {
@@ -100,11 +107,11 @@ class AddNote extends React.Component {
             name='name'
             value={this.state.name}
           />
-          {this.state.isNoteNameValid && (
-            <ValidationError error='input cant be blank' />
+          {this.state.invalidInputName && (
+            <ValidationError error='Title cant be blank' />
           )}
           <br />
-          <label htmlFor='noteContent'>contents of note: </label>
+          <label htmlFor='noteContent'>Contents of note: </label>
           <br />
           <textarea
             name='content'
@@ -112,8 +119,11 @@ class AddNote extends React.Component {
             id='noteContent'
             onChange={this.onInputChange}
           ></textarea>
+          {this.state.invalidInputContent && (
+            <ValidationError error='Content cant be blank' />
+          )}
           <br />
-          <label htmlFor='folderChoice'>choose a folder</label>
+          <label htmlFor='folderChoice'>Choose a folder</label>
           <select
             id='folderChoice'
             name='folder'
@@ -134,5 +144,5 @@ class AddNote extends React.Component {
 export default AddNote;
 
 AddNote.propTypes = {
-  addNewNote: PropTypes.func,
+  addNewNote: PropTypes.func.isRequired,
 };

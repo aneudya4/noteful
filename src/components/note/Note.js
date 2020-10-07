@@ -1,24 +1,24 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router-dom';
-import ApiContext from '../ApiContext';
-const Note = ({ note, match }) => {
+import ApiContext from '../../ApiContext';
+const Note = ({ id, name, folderId, match }) => {
   const { deleteNote } = useContext(ApiContext);
   const filterNotes = () => {
     if (match.params.folderId) {
       return (
-        note.folderId === match.params.folderId && (
+        folderId === match.params.folderId && (
           <>
-            <Link to={`/notes/${note.id}`}> {note.name} </Link>
-            <button onClick={() => deleteNote(note.id)}>delete</button>
+            <Link to={`/notes/${id}`}> {name} </Link>
+            <button onClick={() => deleteNote(id)}>delete</button>
           </>
         )
       );
     }
     return (
       <>
-        <Link to={`/notes/${note.id}`}> {note.name} </Link>
-        <button onClick={() => deleteNote(note.id)}>delete</button>
+        <Link to={`/notes/${id}`}> {name} </Link>
+        <button onClick={() => deleteNote(id)}>delete</button>
       </>
     );
   };
@@ -27,7 +27,8 @@ const Note = ({ note, match }) => {
 export default withRouter(Note);
 
 Note.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
+  id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  folderId: PropTypes.string.isRequired,
   deleteNote: PropTypes.func,
 };

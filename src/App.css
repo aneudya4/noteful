@@ -1,3 +1,15 @@
-/* .notes-container {
+main {
   display: flex;
-} */
+  width: 800px;
+  margin: 10px auto;
+}
+
+.input-error,
+.error {
+  color: rgb(240, 77, 48);
+  text-transform: uppercase;
+}
+
+.error a {
+  color: white;
+}

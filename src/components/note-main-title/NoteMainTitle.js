@@ -13,5 +13,5 @@ const NoteMainTitle = ({ note, history }) => {
 export default NoteMainTitle;
 
 NoteMainTitle.propTypes = {
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired,
 };

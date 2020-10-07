@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Folder from '../folder/Folder';
-import ApiContext from '../ApiContext';
+import ApiContext from '../../ApiContext';
 import './folderList.css';
 const FoldersList = () => {
   const { folders } = useContext(ApiContext);
@@ -9,7 +9,7 @@ const FoldersList = () => {
     return (
       <>
         {folders.map((folder) => (
-          <Folder key={folder.id} folder={folder} />
+          <Folder key={folder.id} name={folder.name} id={folder.id} />
         ))}
         <div className='add-folder-btn'>
           <Link to='/add-folder'>Add Folders</Link>
