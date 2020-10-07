@@ -1,4 +1,4 @@
-ul li {
+ul li:not(:last-child) {
   margin: 5px 10px;
   border: 1px solid black;
   width: 300px;

@@ -11,9 +11,11 @@ const FoldersList = () => {
         {folders.map((folder) => (
           <Folder key={folder.id} name={folder.name} id={folder.id} />
         ))}
-        <div className='add-folder-btn'>
-          <Link to='/add-folder'>Add Folders</Link>
-        </div>
+        <li>
+          <div className='add-folder-btn'>
+            <Link to='/add-folder'>Add Folders</Link>
+          </div>
+        </li>
       </>
     );
   };
