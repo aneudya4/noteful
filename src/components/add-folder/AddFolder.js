@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import config from '../../config';
 import PropTypes from 'prop-types';
 
 import './forms.css';
@@ -28,13 +29,18 @@ class AddFolder extends React.Component {
     }
   };
   postData = (name) => {
+    console.log(config.API_ENDPOINT);
     const options = {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${config.API_KEY}`,
+      },
+
       body: JSON.stringify({ name }),
     };
 
-    fetch('http://localhost:9090/folders', options)
+    fetch(`${config.API_ENDPOINT}folders`, options)
       .then((response) => {
         if (!response.ok) {
           throw new Error('folder could not be added');

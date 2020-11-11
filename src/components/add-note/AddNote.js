@@ -1,5 +1,6 @@
 import React from 'react';
 import './addNote.css';
+import config from '../../config';
 import PropTypes from 'prop-types';
 
 import ValidationError from '../validation-error/ValidationError';
@@ -52,16 +53,20 @@ class AddNote extends React.Component {
     } else {
       const newNote = {
         name,
-        folderId: this.findFolderByName(folder),
+        folderid: this.findFolderByName(folder),
         content,
         modified: new Date(),
       };
       const options = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${config.API_KEY}`,
+        },
         body: JSON.stringify(newNote),
       };
-      fetch('http://localhost:9090/notes', options)
+
+      fetch(`${config.API_ENDPOINT}notes`, options)
         .then((response) => {
           if (!response.ok) {
             throw new Error('could not be added');

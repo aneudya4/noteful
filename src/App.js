@@ -45,8 +45,8 @@ class App extends React.Component {
         Authorization: `Bearer ${config.API_KEY}`,
       },
     };
-
-    fetch(`${config.API_ENDPOINT}${noteId}`, options)
+    console.log(noteId);
+    fetch(`${config.API_ENDPOINT}notes/${noteId}`, options)
       .then((res) => {
         if (!res.ok) {
           throw new Error('Something went wrong');
