@@ -9,6 +9,7 @@ import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 import NoteList from './components/note-list/NoteList';
 import AppHeader from './components/app-header/AppHeader';
 import ApiContext from './ApiContext';
+import config from './config';
 import './App.css';
 
 class App extends React.Component {
@@ -24,17 +25,28 @@ class App extends React.Component {
   }
 
   getData = async (data) => {
-    await fetch(`http://localhost:9090/${data}`)
+    const options = {
+      method: 'GET',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${config.API_KEY}`,
+      },
+    };
+    await fetch(`${config.API_ENDPOINT}${data}`, options)
       .then((res) => res.json())
       .then((res) => this.setState({ [data]: res }));
   };
   handleDeleteNote = (noteId) => {
     const updatedNotes = this.state.notes.filter((note) => note.id !== noteId);
-
     const options = {
       method: 'DELETE',
+      headers: {
+        'content-type': 'application/json',
+        Authorization: `Bearer ${config.API_KEY}`,
+      },
     };
-    fetch(`http://localhost:9090/notes/${noteId}`, options)
+
+    fetch(`${config.API_ENDPOINT}${noteId}`, options)
       .then((res) => {
         if (!res.ok) {
           throw new Error('Something went wrong');
