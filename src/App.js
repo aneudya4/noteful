@@ -82,7 +82,7 @@ class App extends React.Component {
   renderMainRoutes() {
     return (
       <>
-        {['/', '/folder/:folderId'].map((path, index) => (
+        {['/', '/folders/:folderId'].map((path, index) => (
           <Route
             exact
             path={path}
@@ -97,7 +97,7 @@ class App extends React.Component {
   renderNotesRoutes() {
     return (
       <div className='notes-container'>
-        {['/', '/folder/:folderId'].map((path, index) => (
+        {['/', '/folders/:folderId'].map((path, index) => (
           <Route
             exact
             path={path}

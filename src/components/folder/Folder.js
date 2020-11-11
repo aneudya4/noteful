@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 const Folder = ({ name, id }) => {
   return (
     <li className='folders'>
-      <NavLink className='nav-link' to={`/folder/${id}`}>
+      <NavLink className='nav-link' to={`/folders/${id}`}>
         {name}
       </NavLink>
     </li>
@@ -15,6 +15,6 @@ const Folder = ({ name, id }) => {
 export default Folder;
 
 Folder.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
 };

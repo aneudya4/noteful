@@ -11,10 +11,11 @@ const NoteList = () => {
         key={note.id}
         id={note.id}
         name={note.name}
-        folderId={note.folderId}
+        folderId={note.folderid}
       />
     ));
   };
+
   return (
     <div className='notes'>
       <Link to='../add-note'>Add Note</Link>

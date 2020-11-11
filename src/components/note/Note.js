@@ -27,7 +27,7 @@ const Note = ({ id, name, folderId, match }) => {
 export default withRouter(Note);
 
 Note.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   folderId: PropTypes.string.isRequired,
   deleteNote: PropTypes.func,
