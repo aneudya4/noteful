@@ -11,12 +11,14 @@ import AppHeader from './components/app-header/AppHeader';
 import ApiContext from './ApiContext';
 import config from './config';
 import './App.css';
+import Spinner from './components/spinner/Spinner';
 
 class App extends React.Component {
   state = {
     folders: [],
     notes: [],
     hasError: false,
+    isLoading: false,
   };
 
   async componentDidMount() {
@@ -25,6 +27,7 @@ class App extends React.Component {
   }
 
   getData = async (data) => {
+    this.setState({ isLoading: true });
     const options = {
       method: 'GET',
       headers: {
@@ -34,7 +37,7 @@ class App extends React.Component {
     };
     await fetch(`${config.API_ENDPOINT}${data}`, options)
       .then((res) => res.json())
-      .then((res) => this.setState({ [data]: res }));
+      .then((res) => this.setState({ [data]: res, isLoading: false }));
   };
   handleDeleteNote = (noteId) => {
     const updatedNotes = this.state.notes.filter((note) => note.id !== noteId);
@@ -45,7 +48,6 @@ class App extends React.Component {
         Authorization: `Bearer ${config.API_KEY}`,
       },
     };
-    console.log(noteId);
     fetch(`${config.API_ENDPOINT}notes/${noteId}`, options)
       .then((res) => {
         if (!res.ok) {
@@ -131,7 +133,7 @@ class App extends React.Component {
   }
 
   render() {
-    const { folders, notes } = this.state;
+    const { folders, notes, isLoading } = this.state;
     const value = {
       notes,
       folders,
@@ -142,11 +144,14 @@ class App extends React.Component {
         <AppHeader />
         <main>
           <ApiContext.Provider value={value}>
-            <NavigationBar className='aside'>
-              <ErrorBoundary>{this.renderMainRoutes()}</ErrorBoundary>
-            </NavigationBar>
-
-            {this.renderNotesRoutes()}
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <NavigationBar className='aside'>
+                <ErrorBoundary>{this.renderMainRoutes()}</ErrorBoundary>
+              </NavigationBar>
+            )}
+            {!isLoading && this.renderNotesRoutes()}
           </ApiContext.Provider>
         </main>
       </>

@@ -6,7 +6,13 @@ import './noteDetails.css';
 const NoteDetails = (props) => {
   const { notes } = useContext(ApiContext);
   const renderNote = () => {
-    const note = notes.find((note) => note.id === props.match.params.noteId);
+    if (notes.length === 0) {
+      return <> </>;
+    }
+    const note = notes.find(
+      (note) => note.id.toString() === props.match.params.noteId
+    );
+
     return (
       <>
         <NoteMainTitle {...props} note={note} />
